@@ -1,9 +1,8 @@
 import streamlit as st
 import streamlit_calendar as st_calendar
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, MONTHLY, WEEKLY, MO, TU, WE
-
+from dateutil.rrule import rrule, MONTHLY, WEEKLY, TH, TU, WE
 
 # 現在の日付を取得
 now = datetime.now()
