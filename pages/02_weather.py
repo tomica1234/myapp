@@ -92,10 +92,16 @@ hourly_rain_dataframe = pd.DataFrame(data=hourly_rain_data)
 hourly_temp_dataframe = pd.DataFrame(data=hourly_temp_data)
 
 # 当日のデータ抽出
-df_rain_now = hourly_rain_dataframe.iloc[int(now.strftime('%H')) - 9:int(now.strftime('%H'))+15].copy()
+if int(now.strftime('%H')) <= 9:
+    df_rain_now = hourly_rain_dataframe.iloc[0:24].copy()
+else:
+    df_rain_now = hourly_rain_dataframe.iloc[int(now.strftime('%H')) - 9:int(now.strftime('%H'))+15].copy()
 df_rain_now['date'] = pd.to_datetime(df_rain_now['date'], format='%Y-%m-%d %H:%M')
 
-df_temp_now = hourly_temp_dataframe.iloc[int(now.strftime('%H')) - 9:int(now.strftime('%H'))+15].copy()
+if int(now.strftime('%H')) <= 9:
+    df_temp_now = hourly_temp_dataframe.iloc[0:24].copy()
+else:
+    df_temp_now = hourly_temp_dataframe.iloc[int(now.strftime('%H')) - 9:int(now.strftime('%H'))+15].copy()
 df_temp_now['date'] = pd.to_datetime(df_temp_now['date'], format='%Y-%m-%d %H:%M')
 
 # グラフの作成
@@ -154,5 +160,7 @@ for forecast in weather_json['forecasts'][:2]:  # 最初の2つの要素、つ�
     
 st.write(fig_rain)
 st.write(fig_temp)
+st.write(df_rain_now)
+st.write(df_temp_now)
 # 生のJSONデータの表示
 #st.write(weather_json)
