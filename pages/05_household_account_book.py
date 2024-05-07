@@ -49,7 +49,7 @@ data['日付'] = pd.to_datetime(data['日付']).dt.date
 st.title("家計簿")
 
 store = ['ライフ','ユタカ','paypay','その他']
-category = ["食料品", "日用品", "交際費","光熱費","その他"]
+category = ["食料品", "日用品", "交際費","光熱費","生協食堂","その他"]
 
 with st.form("add_data_form"):
     col1, col2 = st.columns(2)
@@ -79,7 +79,7 @@ with col1:
 with col2:
     selected_month = st.selectbox("月", month,index=now_m-1)
 with col3:
-    selected_category = st.selectbox("分類", ["全て","食料品", "日用品", "交際費","光熱費","その他"])
+    selected_category = st.selectbox("分類", ["全て","食料品", "日用品", "交際費","光熱費","生協食堂","その他"])
     
 # 選択されたオプションの表示
 if selected_category == "全て":
