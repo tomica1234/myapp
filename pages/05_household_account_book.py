@@ -94,7 +94,7 @@ else:
 filtered_data['値段'] =filtered_data['値段'].astype(int)
 sum_price = filtered_data['値段'].sum()
 st.write(f'{selected_year}年{selected_month}月の{selected_category}の合計は{sum_price}円です。')
-fig = px.bar(filtered_data, x='日付', y='値段', title='家計簿', labels={'値段': '金額', '日付': '日付'})
+fig = px.bar(filtered_data, x='日付', y='値段', title='家計簿', labels={'値段': '金額', '日付': '日付'},color='分類')
 
         
 st.write(fig)
