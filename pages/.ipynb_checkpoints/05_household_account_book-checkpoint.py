@@ -16,10 +16,10 @@ client = gspread.authorize(creds)
 # Google Sheetを開く
 sheet = client.open("app").worksheet("household_account")
 
-category = {'ライフ':'食料品','ユタカ':'日用品','paypay':'交際費'}
+category = {'ライフ':'食料品','ユタカ':'日用品','ＡＭＡＺＯＮ．ＣＯ．ＪＰ（買物）':'日用品'}
 # Google SheetをPandas DataFrameに読み込む
 def load_data():
-    df= pd.DataFrame(sheet.get_all_values(),columns = ['日付','場所','値段','分類'])
+    df= pd.DataFrame(sheet.get_all_values(),columns = ['日付','場所','値段','分類','ID'])
     
     data = df[1:]
     return data
