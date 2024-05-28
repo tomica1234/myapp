@@ -10,9 +10,9 @@ import plotly.express as px
 
 
 ###時刻テスト用###
-now = pd.Timestamp(year=2024,month=5,day=22,hour=18,minute=0,second=0,tz='Asia/Tokyo')
+#now = pd.Timestamp(year=2024,month=5,day=22,hour=18,minute=0,second=0,tz='Asia/Tokyo')
 # 現在時刻の取得
-#now = pd.Timestamp.now(tz='Asia/Tokyo')
+now = pd.Timestamp.now(tz='Asia/Tokyo')
 # if now.hour < 9:
 #     now = now - pd.Timedelta(days=1)
 #     now_today = now + pd.Timedelta(days=1)
