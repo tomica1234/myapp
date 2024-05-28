@@ -129,7 +129,7 @@ current_period = time_periods[now_hour // 6]
 chance_of_rain_now = weather_json['forecasts'][0]['chanceOfRain'][current_period]
 #temp_now = str(int(hourly_temp_dataframe.iloc[int(now.strftime('%H')) - 9:int(now.strftime('%H'))-8]['temperature_2m'].copy()))
 temp_now = str(int(df_temp_now.iloc[0:1]['temperature_2m'].copy()))
-rain_now = str(int(df_rain_now.iloc[0:1]['precipitation'].copy()))
+rain_now = str(float(round(df_rain_now.iloc[0:1]['precipitation'].copy(),2)))
 
 max_temp = weather_json['forecasts'][0]['temperature']['max'].get('celsius', 'データなし')
 
