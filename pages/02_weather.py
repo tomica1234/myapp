@@ -7,6 +7,7 @@ import openmeteo_requests
 import requests_cache
 from retry_requests import retry
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 
 ###時刻テスト用###
@@ -111,7 +112,9 @@ df_temp_now['date'] = pd.to_datetime(df_temp_now['date'], format='%Y-%m-%d %H:%M
 
 # グラフの作成
 fig_rain = px.bar(df_rain_now, x='date', y='precipitation', title='予想降水量', labels={'Precipitation': '降水量 (mm)', 'Date': '時間'})
+
 fig_temp = px.line(df_temp_now, x='date', y='temperature_2m', title='予想気温', labels={'Temperature_2m':'気温','Date': '時間'})
+
 
 st.title("京都の天気")
 
@@ -167,5 +170,6 @@ for forecast in weather_json['forecasts'][:2]:  # 最初の2つの要素、つ�
 
 st.write(fig_rain)
 st.write(fig_temp)
+
 st.write(df_rain_now)
 st.write(df_temp_now)
