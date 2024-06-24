@@ -16,21 +16,49 @@ client = gspread.authorize(creds)
 # Google Sheetを開く
 sheet = client.open("app").worksheet("household_account")
 
-category = {'ライフ':'食料品','ユタカ':'日用品','ＡＭＡＺＯＮ．ＣＯ．ＪＰ（買物）':'日用品'}
-# Google SheetをPandas DataFrameに読み込む
+# category = {'ライフ':'食料品','ユタカ':'日用品','ＡＭＡＺＯＮ．ＣＯ．ＪＰ（買物）':'日用品'}
+# # Google SheetをPandas DataFrameに読み込む
+# def load_data():
+#     df= pd.DataFrame(sheet.get_all_values(),columns = ['日付','場所','値段','分類','ID'])
+    
+#     data = df[1:]
+#     return data
+# data = load_data()
+
+# for i in range(1,len(data)+1):
+#     data_ct = category.get(data['場所'][i])
+#     if data['分類'][i] == "":
+#         data['分類'][i] = data_ct
+
+#     data = data.fillna('その他')
 def load_data():
     df= pd.DataFrame(sheet.get_all_values(),columns = ['日付','場所','値段','分類','ID'])
     
     data = df[1:]
     return data
 data = load_data()
+data.columns = ['日付','場所','値段','分類','ID']
 
-for i in range(1,len(data)+1):
-    data_ct = category.get(data['場所'][i])
-    if data['分類'][i] == "":
-        data['分類'][i] = data_ct
+classification_rules = {
+    'ＡＭＡＺＯＮ': '日用品',
+    'ライフ': '食料品',
+    'フレスコ': '食料品',
+    'ファミリーマート': '日用品',
+    'セブン－イレブン': '日用品',
+    'ローソン':'日用品',
+    'サイゼ': '交際費'
+}
+# 分類ルールを適用する関数（空の分類のみ更新）
+def categorize(row):
+    if row['分類']:  # すでに分類が存在する場合はその値を保持
+        return row['分類']
+    for key, value in classification_rules.items():
+        if key in row['場所']:
+            return value
+    return 'その他'  # 辞書に該当しない場所の場合または分類が空の場合
 
-    data = data.fillna('その他')
+# 分類列の更新
+data['分類'] = data.apply(categorize, axis=1)
 
 
 
@@ -99,3 +127,34 @@ fig = px.bar(filtered_data, x='日付', y='値段', title='家計簿', labels={'
         
 st.write(fig)
 st.dataframe(filtered_data[['日付','分類','値段']].iloc[:,:4])
+
+uploaded_file = st.file_uploader("明細のアップロード", type=['csv'])
+    # DataFrameをスプレッドシートに書き込む関数
+def df_to_sheet(df, worksheet):
+    # DataFrameをリスト形式に変換
+    values = [df.columns.tolist()] + df.values.tolist()
+    # スプレッドシートに書き込み
+    worksheet.update('A1', values)
+
+if uploaded_file is not None:
+    # ファイルがアップロードされた場合、Pandasでデータを読み込む
+    df_cred = pd.read_csv(uploaded_file, encoding='cp932',names = ('日付','場所(詳細)','値段','1','2','3','4'))
+    df_cred = df_cred.iloc[:,0:6]
+    sheet_ha = client.open("app").worksheet("household_account")
+    df_ha= pd.DataFrame(sheet_ha.get_all_values())
+
+    df_credit = df_cred.iloc[:,0:3]
+    df_credit.columns = ['日付','場所(詳細)','値段']
+    df_ha.columns = ['日付','場所','値段','分類','ID']
+    merged_df = pd.merge(df_ha, df_credit, on=['日付', '値段'], how='outer')
+    
+    # 場所を場所(詳細)で更新（場所(詳細)が存在する場合）
+    merged_df['場所'] = merged_df.apply(lambda x: x['場所(詳細)'] if pd.notna(x['場所(詳細)']) else x['場所'], axis=1)
+    
+    # 不要な列の削除
+    merged_df.drop('場所(詳細)', axis=1, inplace=True)
+    
+    df = merged_df.iloc[0:len(df_ha)]
+    df = df.iloc[1:]
+    df_to_sheet(df, sheet_ha)
+    
