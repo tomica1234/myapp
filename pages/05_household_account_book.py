@@ -16,6 +16,7 @@ client = gspread.authorize(creds)
 # Google Sheetを開く
 sheet = client.open("app").worksheet("household_account")
 
+
 # category = {'ライフ':'食料品','ユタカ':'日用品','ＡＭＡＺＯＮ．ＣＯ．ＪＰ（買物）':'日用品'}
 # # Google SheetをPandas DataFrameに読み込む
 # def load_data():
@@ -68,7 +69,7 @@ now_d = datetime.today().day
 now_today = str(now_y)+"/"+str(now_m)+"/"+str(now_d)
 
 # '日付'列を日付型に変換
-data['日付'] = pd.to_datetime(data['日付'])
+data['日付'] = pd.to_datetime(data['日付'],errors='coerce')
 # 年と月の情報を抽出して整数型に変換
 data['年'] = data['日付'].dt.strftime('%Y').fillna(0).astype(int)  # 年をYYYY形式で抽出し、整数型に変換
 data['月'] = data['日付'].dt.strftime('%m').fillna(0).astype(int)  # 月をMM形式で抽出し、整数型に変換
