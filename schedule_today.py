@@ -16,11 +16,11 @@ sheet_sch = {
 }
 
 sheet_bel = {
-    "持ち物(月)": [None, None, None, None, None],
-    "持ち物(火)": [None, None, None, None, None],
-    "持ち物(水)": [None, None, None, None, None],
-    "持ち物(木)": [None, None, None, None, None],
-    "持ち物(金)": [None, None, None, None, None]
+    "持ち物(月)": [None, None, 'パソコン　教科書　グラフ用紙　ノート', 'パソコン　教科書　グラフ用紙　ノート', None],
+    "持ち物(火)": [None, None, None, '教科書', None],
+    "持ち物(水)": [None, None, None, '教科書', None],
+    "持ち物(木)": [None, '教科書', '教科書', '教科書', None],
+    "持ち物(金)": [None, None, '教科書', None, None]
 }
 
 sheet_pla = {
