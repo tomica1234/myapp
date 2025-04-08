@@ -4,17 +4,17 @@ import datetime
 
 
 
-# Google Sheetを開く
-sheet =  {
+
+sheet = {
     "時間": ["8:45~10:15", "10:30~12:00", "13:15~14:45", "15:00~16:30", "16:45~18:15"],
-    "月": [None, "日本語の時間表現の諸相", "物理学実験", "物理学実験", "言学Ⅱ"],
-    "火": [None, None, "線形代数学(講義)", "裁判制度入門", None],
-    "水": [None, None, "微分積分学(講義)", "基礎物理化学(量子論)", None],
-    "木": ["物理学基礎論", "中国語", "英語ライリス", "情報基礎", "物理工学総論"],
-    "金": ["数学演義", "英語リーディング", "中国語", None, None]
+    "月": ["確率論基礎", "日本国憲法", "機械設計制作", None, None],
+    "火": [None, "都市空間論", None, "振動波動論", None],
+    "水": ["材料力学", "卓球", None, None, None],
+    "木": [None, None, "ベクトル解析", None, None],
+    "金": ["熱力学", None, None, "シェイクスピア", None]
 }
 
-# Google SheetをPandas DataFrameに読み込む
+
 def load_data():
     data = pd.DataFrame(sheet)
     data.index = data.index+1
